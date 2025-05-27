@@ -46,6 +46,13 @@ export class SemesterController {
     return this.semesterService.put(id, updateSemesterDto);
   }
 
+  @Delete('/all')
+  @ApiOperation({ summary: 'Supprimer tous les semestres' })
+  @ApiResponse({ status: 200, description: 'Tous les semestres supprimés' })
+  async deleteAllSemesters() {
+    return this.semesterService.deleteAll();
+  }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Supprimer un semestre par ID' })
   @ApiParam({ name: 'id', type: Number, description: 'ID du semestre' })
@@ -54,10 +61,5 @@ export class SemesterController {
     return this.semesterService.delete({ id });
   }
 
-  @Delete('/all')
-  @ApiOperation({ summary: 'Supprimer tous les semestres' })
-  @ApiResponse({ status: 200, description: 'Tous les semestres supprimés' })
-  async deleteAllSemesters() {
-    return this.semesterService.deleteAll();
-  }
+
 }
