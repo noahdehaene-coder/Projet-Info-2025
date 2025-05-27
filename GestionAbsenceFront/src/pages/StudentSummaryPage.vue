@@ -1,7 +1,7 @@
 <!--Page de récapitulatif des absences par étudiant.e-->
 <template>
   <main class="left" v-if="student">
-    <h1>Récapitulaif des absences de {{ student.name }}</h1>
+    <h1>Récapitulatif des absences de {{ student.name }}</h1>
 
     <div class="sections-container">
 
