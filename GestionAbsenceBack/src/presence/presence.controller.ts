@@ -38,7 +38,7 @@ export class PresenceController {
   @Post()
   @ApiOperation({ summary: 'Créer une absence' })
   @ApiResponse({ status: 201, description: 'Absence créée avec succès' })
-  async post(@Body() createPresenceDto: CreatePresenceDto) {
+  /*async post(@Body() createPresenceDto: CreatePresenceDto) {
     const data: Prisma.presenceCreateInput = {
       presence_student: {
         connect: { id: createPresenceDto.student_id },
@@ -48,6 +48,11 @@ export class PresenceController {
       },
     };
     return this.presenceService.post(data);
+  }*/
+
+  async post(@Body() createPresenceDto: CreatePresenceDto) {
+    // On passe juste le DTO au service, c'est le service qui travaille.
+    return this.presenceService.post(createPresenceDto);
   }
 
   @Post('many/:slot_id')

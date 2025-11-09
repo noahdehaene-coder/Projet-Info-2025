@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe} from '@nestjs/common';
 import { SlotService } from './slot.service';
 import { CreateSlotDto } from './dto/create-slot-by-session.dto';
-import { CreateSlotBySessionDto } from './dto/ceate-slot.dto';
+import { CreateSlotBySessionDto } from './dto/create-slot.dto';
 import { UpdateSlotDto } from './dto/update-slot.dto';
 import { Prisma } from '@prisma/client';
 import { ApiTags, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
@@ -27,11 +27,19 @@ export class SlotController {
     return this.slotService.getAll();
   }
 
+  @Get('by-date/:date')
+  @ApiOperation({ summary: 'Récupérer les créneaux par date' })
+  @ApiParam({ name: 'date', type: String, description: 'Date au format YYYY-MM-DD' })
+  @ApiResponse({ status: 200, description: 'Créneaux trouvés pour cette date' })
+  getAllByDate(@Param('date') date: string) {
+    return this.slotService.getAllByDate(date);
+  }
+
   @Post()
   @ApiOperation({ summary: 'Créer un créneau' })
   @ApiResponse({ status: 201, description: 'Créneau créé avec succès' })
   async post(@Body() createSlotDto: CreateSlotDto) {
-    const data: Prisma.slotCreateInput = {
+    /*const data: Prisma.slotCreateInput = {
       date: createSlotDto.date,
       slot_group: {
         connect: { id: createSlotDto.group_id },
@@ -40,7 +48,8 @@ export class SlotController {
         connect: { id: createSlotDto.session_type_id },
       },
     };
-    return this.slotService.post(data);
+    return this.slotService.post(data);*/
+    return this.slotService.post(createSlotDto);
   }
 
   @Post('by-session')

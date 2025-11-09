@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma, presence } from '@prisma/client';
+import { CreatePresenceDto } from './dto/create-presence.dto';
 
 @Injectable()
 export class PresenceService {
@@ -69,11 +70,26 @@ export class PresenceService {
     return this.prisma.presence.findMany();
   }
 
-  async post(data: Prisma.presenceCreateInput): Promise<presence> {
+  /*async post(data: Prisma.presenceCreateInput): Promise<presence> { //Modification pour les test
     return this.prisma.presence.create({
       data,
     });
-  }
+  }*/
+
+  async post(data: CreatePresenceDto): Promise<presence> {
+  const { student_id, slot_id } = data;
+
+  return this.prisma.presence.create({
+    data: {
+      presence_student: {
+        connect: { id: student_id },
+      },
+      presence_slot: {
+        connect: { id: slot_id },
+      },
+    },
+  });
+}
 
   async postMany(slotId: number, studentIds: number[]) {
     const data = studentIds.map((studentId) => ({
