@@ -105,16 +105,36 @@ export async function getSlots(date) {
  * @param {Object} slot - L'objet créneau (doit contenir date, group_id, session_type_id).
  * @returns {Promise<Object>} Une promesse contenant le créneau créé.
  */
-export async function postSlot(slot) {
-  const response = await fetch(`http://localhost:3000/slot`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(slot),
-  });
-  const createdSlot = await response.json();
-  return createdSlot;
+export async function postSlot(groupId, courseName, sessionType, date) {
+    try {
+        const response = await fetch(`http://localhost:3000/slot/by-session`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            // ================== CORRECTION ==================
+            // On envoie un objet unique avec les bonnes clés
+            body: JSON.stringify({
+                groupId: groupId,
+                courseName: courseName,
+                sessionType: sessionType,
+                date: date
+            })
+            // ================================================
+        })
+        
+        if (!response.ok) {
+            // Tente de lire l'erreur détaillée du backend
+            const errorData = await response.json(); 
+            throw new Error(`Erreur du serveur (400) : ${errorData.message || 'Bad Request'}`);
+        }
+        
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
+
+    } catch (error) {
+        console.error("Erreur lors de la création du créneau :", error);
+    }
 }
 
 /**

@@ -123,15 +123,15 @@ function selectAll() { // ne modifie rien dans la liste des étudiants extérieu
 
 
 const callSaved = ref(false);
-function saveCall() {
-    postAbsence(slot.value.id, absentStudentsId.value);
+async function saveCall() {
+    await postAbsence(slot.value.id, absentStudentsId.value);
     callSaved.value = true;
 }
 
 const router = useRouter();
 
-function saveCallAndGoBack() {
-    saveCall();
+async function saveCallAndGoBack() {
+    await saveCall();
     router.go(-1);
 }
 
