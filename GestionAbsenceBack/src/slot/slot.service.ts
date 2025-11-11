@@ -65,7 +65,7 @@ export class SlotService {
     }
     return this.prisma.slot.create({
       data: {
-        date: new Date(`${date}T08:00:00`),
+        date: date,
         slot_group: {
           connect: { id: groupId },
         },
